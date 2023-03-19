@@ -15,4 +15,9 @@ export const CampaignList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-gap: 25px;
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
 `;

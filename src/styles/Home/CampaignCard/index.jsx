@@ -20,7 +20,6 @@ export const CardImage = styled.img`
   object-fit: cover;
 `;
 export const CategorySection = styled.div`
-  padding-inline: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -31,36 +30,88 @@ export const CardCategory = styled.p`
 `;
 export const DetailSection = styled.div`
   width: 100%;
-  padding-inline: 20px;
+  padding: 20px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   gap: 15px;
+  cursor: pointer;
 `;
 export const CardTitle = styled.h1`
   font: normal normal 600 16px "Work Sans", sans-serif;
 `;
 export const CardDesc = styled(CardCategory)`
   font-weight: 400;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
 `;
+
+export const BottomSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+`;
+
+export const TimingSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+`;
+
+export const Time = styled.p`
+  font: normal normal 600 16px "Work Sans", sans-serif;
+`;
+
 export const FundingSection = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 10px;
 `;
-export const RaisedSection = styled(DetailSection)`
+
+export const ProgressSection = styled.div`
+  width: 100%;
+  height: 15px;
+  display: grid;
+  place-items: center;
+`;
+
+export const RaisedSection = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 5px;
 `;
+
+export const EthLogo = styled.img`
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+`;
+
 export const AmountRaised = styled.h1`
-  font: normal normal 500 16px "Work Sans", sans-serif;
+  display: flex;
+  align-items: center;
+  font: normal normal 500 18px "Work Sans", sans-serif;
 `;
 export const TargetRaised = styled.p`
+  display: flex;
+  align-items: center;
   color: gray;
-  font: normal normal 400 12px "Work Sans", sans-serif;
+  font: normal normal 400 16px "Work Sans", sans-serif;
 `;
-export const BackerSection = styled(RaisedSection)``;
+export const BackerSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+`;
 export const BackerCount = styled(AmountRaised)``;
-export const TotalBackers = styled(TargetRaised)``;
+export const TotalBackers = styled.p`
+  font: normal normal 400 14px "Work Sans", sans-serif;
+`;
 export const AuthorSection = styled(FundingSection)`
   padding: 0 20px 10px;
   align-items: center;

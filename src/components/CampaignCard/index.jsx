@@ -1,5 +1,5 @@
 import React from "react";
-import { FolderOutlined } from "@mui/icons-material";
+import { AccessTime, Business, FolderOutlined } from "@mui/icons-material";
 import {
   AmountRaised,
   AuthorImage,
@@ -7,6 +7,7 @@ import {
   AuthorSection,
   BackerCount,
   BackerSection,
+  BottomSection,
   CardCategory,
   CardDesc,
   CardImage,
@@ -14,46 +15,72 @@ import {
   CardWrap,
   CategorySection,
   DetailSection,
+  EthLogo,
   FundingSection,
   ImageSection,
   Join,
+  ProgressSection,
   RaisedSection,
   TargetRaised,
+  Time,
+  TimingSection,
   TotalBackers,
 } from "../../styles/Home/CampaignCard";
+import moment from "moment";
+import { LinearProgress } from "@mui/material";
 
-const CampaignCard = () => {
+const CampaignCard = ({ data }) => {
   return (
     <CardWrap>
-      <ImageSection>
-        <CardImage loading="lazy" src="/assets/1.jpg" />
-      </ImageSection>
-      <CategorySection>
-        <FolderOutlined sx={{ color: "grey" }} />
-        <CardCategory> Education</CardCategory>
-      </CategorySection>
       <DetailSection>
-        <CardTitle>Powered kits Learning Boxes</CardTitle>
-        <CardDesc>
-          Fun, durable and reusable boxes with eco-friendly options.
-        </CardDesc>
-        <FundingSection>
-          <RaisedSection>
-            <AmountRaised>1.2 eth</AmountRaised>
-            <TargetRaised>Raised of 10 eth</TargetRaised>
-          </RaisedSection>
-          <BackerSection>
-            <BackerCount>50</BackerCount>
-            <TotalBackers>Total backers</TotalBackers>
-          </BackerSection>
-        </FundingSection>
+        <CardTitle>{data.title}</CardTitle>
+        <CategorySection>
+          <Business />
+          <CardCategory>{data.charityName}</CardCategory>
+        </CategorySection>
+        <CardDesc>{data.desc}</CardDesc>
+        <BottomSection>
+          <FundingSection>
+            <RaisedSection>
+              <BackerSection>
+                <AmountRaised>
+                  <EthLogo src="./assets/eth-logo.svg" />
+                  {data.amount / 1000000000000000000}ETH
+                </AmountRaised>{" "}
+                <TotalBackers>Raised</TotalBackers>
+              </BackerSection>
+              <BackerSection>
+                {" "}
+                <TargetRaised>
+                  <EthLogo src="./assets/eth-logo.svg" />
+                  {data.target}ETH
+                </TargetRaised>
+                <TotalBackers>Target</TotalBackers>{" "}
+              </BackerSection>
+            </RaisedSection>
+          </FundingSection>
+          <ProgressSection>
+            <LinearProgress
+              sx={{
+                width: "100%",
+                height: "7px",
+                borderRadius: "10px",
+              }}
+              variant="determinate"
+              value={
+                (parseInt(data?.amount) /
+                  1000000000000000000 /
+                  parseInt(data?.target)) *
+                100
+              }
+            />
+          </ProgressSection>
+        </BottomSection>
+        <TimingSection>
+          <AccessTime />
+          <Time>{`closed ${moment.unix(data.releaseTime).fromNow()}`}</Time>
+        </TimingSection>
       </DetailSection>
-      <AuthorSection>
-        <AuthorImage src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" />
-        <AuthorName>
-          <Join>by </Join>Adom Shafi
-        </AuthorName>
-      </AuthorSection>
     </CardWrap>
   );
 };

@@ -45,16 +45,16 @@ export const AccountAddress = styled.p`
 
 export const StartCampaign = styled.button`
   width: 100%;
-  max-width: max-content;
+  max-width: 150px;
   min-height: 45px;
-  padding-inline: 20px;
+  padding-inline: 10px;
   border: none;
   border-radius: 7px;
   outline: none;
   cursor: pointer;
   background-color: #ad7be9;
   color: white;
-  font: normal normal 500 18px "Work Sans", sans-serif;
+  font: normal normal 500 15px "Work Sans", sans-serif;
 
   &:hover {
     background-color: #a459d1;
