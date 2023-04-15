@@ -2,11 +2,11 @@ import React from "react";
 import { Heading } from "../../../styles/Campaign/Fund";
 import { PdfFrame, PreviewWrap } from "../../../styles/Campaign/PdfPreview";
 
-const PdfPreview = () => {
+const PdfPreview = ({ PDF }) => {
   return (
     <PreviewWrap>
       <Heading>Bills</Heading>
-      <PdfFrame src="/assets/pdf/sample.pdf" />
+      <PdfFrame src={PDF} />
     </PreviewWrap>
   );
 };

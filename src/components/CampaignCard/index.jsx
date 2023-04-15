@@ -1,24 +1,19 @@
+import { AccessTime, Business } from "@mui/icons-material";
+import { LinearProgress } from "@mui/material";
+import moment from "moment";
 import React from "react";
-import { AccessTime, Business, FolderOutlined } from "@mui/icons-material";
 import {
   AmountRaised,
-  AuthorImage,
-  AuthorName,
-  AuthorSection,
-  BackerCount,
   BackerSection,
   BottomSection,
   CardCategory,
   CardDesc,
-  CardImage,
   CardTitle,
   CardWrap,
   CategorySection,
   DetailSection,
   EthLogo,
   FundingSection,
-  ImageSection,
-  Join,
   ProgressSection,
   RaisedSection,
   TargetRaised,
@@ -26,8 +21,6 @@ import {
   TimingSection,
   TotalBackers,
 } from "../../styles/Home/CampaignCard";
-import moment from "moment";
-import { LinearProgress } from "@mui/material";
 
 const CampaignCard = ({ data }) => {
   return (
@@ -61,11 +54,6 @@ const CampaignCard = ({ data }) => {
           </FundingSection>
           <ProgressSection>
             <LinearProgress
-              sx={{
-                width: "100%",
-                height: "7px",
-                borderRadius: "10px",
-              }}
               variant="determinate"
               value={
                 (parseInt(data?.amount) /

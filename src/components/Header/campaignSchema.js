@@ -23,4 +23,5 @@ export const campaignSchema = yup.object().shape({
     .typeError("Amount must be a number")
     .moreThan(0)
     .required("Please provide a message"),
+  attachment: yup.mixed().required("Please provide a attachment"),
 });

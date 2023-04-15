@@ -2,12 +2,6 @@ import React from "react";
 import {
   BannerImg,
   BannerSection,
-  Box,
-  BoxWrap,
-  Counts,
-  Details,
-  DetailText,
-  Numbers,
 } from "../../../styles/Campaign/BannerSection";
 
 const Banner = () => {

@@ -1,19 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import CampaignCard from "../../../components/CampaignCard";
 import {
   CampaignList,
   CampaignWrap,
-  Heading,
 } from "../../../styles/Home/CampaignsSection";
-import CampaignCard from "../../../components/CampaignCard";
-import { Link } from "react-router-dom";
+import {
+  HeadingSection,
+  SectionHeading,
+} from "../../../styles/Merchandise/StyleSlider";
 
 const CampaignsSection = ({ campaignList }) => {
   return (
     <CampaignWrap>
-      <Heading>All Campaigns</Heading>
+      <HeadingSection>
+        <SectionHeading>All Campaign</SectionHeading>
+      </HeadingSection>
       <CampaignList>
         {campaignList?.map((data, index) => (
-          <Link to={`/campaign/${data?.walletAddress}/${index}`} key={index}>
+          <Link to={`/campaign/${data?.id}`} key={index}>
             <CampaignCard data={data} />
           </Link>
         ))}

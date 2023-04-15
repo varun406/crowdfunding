@@ -2,12 +2,17 @@ import styled from "styled-components";
 
 export const CardWrap = styled.div`
   width: 100%;
+  min-height: 250px;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 15px 4px rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   cursor: pointer;
+  color: white;
+  position: relative;
+  background-color: #03001c;
 `;
 
 export const ImageSection = styled.div`
@@ -56,12 +61,13 @@ export const BottomSection = styled.div`
 
 export const TimingSection = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 7px;
 `;
 
 export const Time = styled.p`
-  font: normal normal 600 16px "Work Sans", sans-serif;
+  font: normal normal 600 18px "Work Sans", sans-serif;
 `;
 
 export const FundingSection = styled.div`
@@ -75,6 +81,17 @@ export const ProgressSection = styled.div`
   height: 15px;
   display: grid;
   place-items: center;
+
+  .MuiLinearProgress-determinate {
+    width: 100%;
+    height: 7px;
+    border-radius: 10px;
+    background-color: rgba(160, 26, 201, 0.2);
+  }
+
+  .MuiLinearProgress-bar {
+    background-color: #a31acb;
+  }
 `;
 
 export const RaisedSection = styled.div`
@@ -94,7 +111,7 @@ export const EthLogo = styled.img`
 export const AmountRaised = styled.h1`
   display: flex;
   align-items: center;
-  font: normal normal 500 18px "Work Sans", sans-serif;
+  font: normal normal 600 18px "Work Sans", sans-serif;
 `;
 export const TargetRaised = styled.p`
   display: flex;

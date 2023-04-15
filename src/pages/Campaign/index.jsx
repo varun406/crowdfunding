@@ -1,28 +1,46 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DataContext } from "../../App";
-import { BottomWrap, Container, Wrapper } from "../../styles/Campaign/Main";
+import { DataContext, contract } from "../../App";
+import {
+  BottomWrap,
+  Container,
+  PaymentSection,
+  Wrapper,
+} from "../../styles/Campaign/Main";
 import Header from "../../components/Header";
 import Fund from "../../views/Campaign/Fund";
 import CampaignDetail from "../../views/Campaign/CampaignDetail";
 import { useParams } from "react-router-dom";
+import { TipButton } from "../../styles/Campaign/Fund";
+import TipCard from "../../components/TipCard";
+import Auth from "../../components/Auth";
+import { CampaignContext } from "../../context/CampaignContext";
+import { getSingleCampaign } from "../../api/services/Campaign";
+import { getPDF } from "../../api/services/User";
+import { AuthContext } from "../../context/AuthContext";
 
 const Campaign = () => {
-  const { address, no } = useParams();
-  const { setLoading, contract, currentAddress } = useContext(DataContext);
+  const { id } = useParams();
+  const { user } = useContext(AuthContext);
+  const { setLoading, setLoginOpen, setTipOpen, openTip } =
+    useContext(DataContext);
+  const { currentAddress } = useContext(CampaignContext);
   const [campaign, setCampaign] = useState();
 
   useEffect(() => {
+    console.log(id);
     const getCampaign = async () => {
       setLoading(true);
 
-      const Campaign = await contract?.methods?.getCampaign(address)?.call();
-
-      setCampaign(Campaign[no]);
-
+      const singleCampaign = await getSingleCampaign(id);
       setLoading(false);
+      setCampaign(singleCampaign[0]);
     };
+
     getCampaign();
-  }, [address, contract?.methods, currentAddress, no, setLoading]);
+  }, [id]);
+
+  console.log(campaign);
+
   return (
     <Container>
       <Wrapper>
@@ -30,10 +48,24 @@ const Campaign = () => {
         {campaign && (
           <BottomWrap>
             <CampaignDetail data={campaign} />
-            <Fund
-              walletAddress={campaign?.walletAddress}
-              creator={campaign?.creator}
-            />
+            <PaymentSection>
+              <Fund
+                walletAddress={campaign?.walletAddress}
+                charityName={campaign?.charityName}
+                amountRaised={campaign?.amount}
+                targetAmount={campaign?.target}
+                charityTitle={campaign?.title}
+                isCampaignEnded={campaign?.isEnded}
+              />
+
+              {campaign?.walletAddress?.toLowerCase() === currentAddress &&
+                campaign?.isEnded && (
+                  <TipButton onClick={() => setTipOpen(true)}>
+                    Give Tip
+                  </TipButton>
+                )}
+              {openTip && <TipCard />}
+            </PaymentSection>
           </BottomWrap>
         )}
       </Wrapper>

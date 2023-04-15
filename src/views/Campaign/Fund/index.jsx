@@ -1,6 +1,6 @@
+import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import Web3 from "web3";
-import { DataContext } from "../../../App";
+import { DataContext, contract, web3 } from "../../../App";
 import {
   EthInput,
   FundButton,
@@ -8,61 +8,92 @@ import {
   FundWrap,
   Heading,
   Label,
+  RequestStatus,
   WithdrawButton,
+  WithdrawWrap,
 } from "../../../styles/Campaign/Fund";
+import { CampaignContext } from "../../../context/CampaignContext";
+import {
+  availableToWithdraw,
+  depositFund,
+} from "../../../api/services/Campaign";
+import Withdraw from "../Withdraw";
+import { postWithdrawalRequest } from "../../../api/services/User";
 
-const Fund = ({ walletAddress, creator }) => {
-  const { web3, setLoading, contract, currentAddress } =
+const Fund = ({
+  walletAddress,
+  charityName,
+  charityTitle,
+  amountRaised,
+  targetAmount,
+  isCampaignEnded,
+}) => {
+  const { setLoading, setSnackbarOpen, setSnackbarMsg } =
     useContext(DataContext);
+  const { currentAddress } = useContext(CampaignContext);
   const [getFund, setFund] = useState(0.02);
+  const [requestStatus, setRequestStatus] = useState("");
+  const [withdrawStatus, setWithdrawStatus] = useState("");
 
   useEffect(() => {
     const checkWithdrawAvailability = async () => {
       setLoading(true);
-      const res = await contract?.methods
-        ?.availableToWithdraw(walletAddress)
-        ?.call();
 
-      console.log(res);
-      // web3.eth
-      //   .sendTransaction({
-      //     from: "0xABaF9726c4b72778f89f949779c7932cc9d4F9cB",
-      //     to: "0xb23d344C961fa85429c458bd97e435fad99220d3",
-      //     value: "1000000000000000",
-      //   })
-      //   .then(function (receipt) {
-      //     console.log(receipt);
-      //   });
+      const res = await axios.get(
+        `http://localhost:5000/withdrawal/get-request?address=${walletAddress}`
+      );
+
+      setRequestStatus(res?.data.message[0]?.widthdrawalStatus || null);
       setLoading(false);
     };
-
     checkWithdrawAvailability();
   }, [walletAddress]);
 
   const DepositFund = async (e) => {
     e.preventDefault();
+    if (getFund > targetAmount - amountRaised / 1000000000000000000) {
+      setSnackbarOpen(true);
+      setSnackbarMsg("ETH Amount is greater");
+      return;
+    }
+
     setLoading(true);
-    await contract?.methods?.deposit(walletAddress, currentAddress)?.send({
-      from: currentAddress,
-      value: getFund * 1000000000000000000,
-    });
+    console.log(walletAddress, currentAddress, charityTitle, typeof getFund);
+    await depositFund(walletAddress, currentAddress, charityTitle, getFund);
     setLoading(false);
-    window.location.reload();
   };
 
-  const WithdrawFund = async (e) => {
+  const SendRequest = async (e) => {
     e.preventDefault();
+    console.log("run");
     setLoading(true);
-    console.log(walletAddress);
-    await contract?.methods
-      ?.withdraw(walletAddress)
-      ?.send({
-        from: currentAddress,
-        to: currentAddress,
-        value: 30000000000000000,
-      })
-      .then(console.log("success"));
-    setLoading(false);
+    if (amountRaised <= 0) {
+      console.log("run");
+      setSnackbarOpen(true);
+      setSnackbarMsg("Your haven't raised any amount!");
+
+      setLoading(false);
+      setSnackbarOpen(false);
+    } else {
+      console.log("run");
+      console.log(web3?.utils.fromWei(amountRaised, "ether"));
+      const canWithdraw = await availableToWithdraw(
+        walletAddress,
+        currentAddress
+      );
+      console.log(canWithdraw);
+      setWithdrawStatus(canWithdraw);
+      const res = await postWithdrawalRequest(
+        walletAddress,
+        charityName,
+        amountRaised,
+        targetAmount
+      );
+      setSnackbarOpen(true);
+      setSnackbarMsg(res.data.message);
+      setLoading(false);
+      setSnackbarOpen(false);
+    }
   };
 
   return (
@@ -71,7 +102,7 @@ const Fund = ({ walletAddress, creator }) => {
         {walletAddress?.toLowerCase() === currentAddress ? "Withdraw" : "Fund"}
       </Heading>
       {walletAddress?.toLowerCase() === currentAddress ? (
-        <WithdrawButton onClick={WithdrawFund}>Request Withdraw</WithdrawButton>
+        <Withdraw requestStatus={requestStatus} SendRequest={SendRequest} />
       ) : (
         <FundForm>
           <Label>Enter ETH to donate</Label>
@@ -82,7 +113,7 @@ const Fund = ({ walletAddress, creator }) => {
             value={getFund}
             onChange={(e) => setFund(e.target.value)}
           />
-          <FundButton onClick={DepositFund} type="submit">
+          <FundButton onClick={(e) => DepositFund(e)} type="submit">
             Fund Campaign
           </FundButton>
         </FundForm>

@@ -5,8 +5,19 @@ export const TabWrap = styled.div`
   min-height: 300px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+
+  .MuiDataGrid-overlayWrapperInner {
+    background-color: #03001c;
+  }
+
   .MuiButtonBase-root {
+    color: white;
     font: normal normal 600 15px "Work Sans", sans-serif;
+  }
+
+  .MuiDataGrid-columnHeaderTitle,
+  .MuiDataGrid-virtualScrollerRenderZone {
+    color: white;
   }
 `;
 
@@ -15,16 +26,23 @@ export const PanelContainer = styled.div`
   padding: 10px;
 `;
 
+export const ActionWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+`;
+
 export const StatusButton = styled.button`
   width: 100%;
-  max-width: 120px;
-  min-height: 40px;
-  padding: 7px 10px;
+  max-width: 80px;
+  height: 35px;
+  padding: 5px 7px;
   border: none;
   border-radius: 7px;
   outline: none;
   background-color: ${(props) => (props.status === "approve" ? "blue" : "red")};
   color: white;
-  font: normal normal 600 16px "Work Sans", sans-serif;
+  font: normal normal 600 14px "Work Sans", sans-serif;
   cursor: pointer;
 `;

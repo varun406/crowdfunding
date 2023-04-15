@@ -39,12 +39,7 @@ export const Box = styled.div`
   background-color: grey;
   border-radius: 12px;
 `;
-export const Numbers = styled.div`
-  width: 100%;
-  display: grid;
-  place-items: center;
-  padding-block: 5px;
-`;
+
 export const Counts = styled.h1`
   color: white;
   font: normal normal 600 30px "Work Sans", sans-serif;
@@ -54,13 +49,16 @@ export const Counts = styled.h1`
   }
 `;
 
-export const Details = styled(Numbers)`
-  border-top: 1px solid black;
+export const Details = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const DetailText = styled.p`
   color: darkgrey;
-  font: normal normal 400 18px "Work Sans", sans-serif;
+  font: normal normal 600 18px "Work Sans", sans-serif;
 
   @media (max-width: 420px) {
     font-size: 14px;

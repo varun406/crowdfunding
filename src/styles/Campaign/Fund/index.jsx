@@ -9,10 +9,12 @@ export const FundWrap = styled.div`
   justify-content: center;
   gap: 15px;
   padding: 15px;
-  background-color: #edf1d6;
+  background-color: #03001c;
   border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 0 15px 4px rgba(255, 255, 255, 0.02);
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     max-width: 100%;
   }
 `;
@@ -21,7 +23,7 @@ export const Label = styled.label`
 `;
 
 export const Heading = styled.h1`
-  font: normal normal 600 20px "Work Sans", sans-serif;
+  font: normal normal 600 35px "Work Sans", sans-serif;
 `;
 
 export const FundForm = styled.form`
@@ -34,24 +36,39 @@ export const FundForm = styled.form`
 
 export const EthInput = styled.input`
   width: 100%;
-  font: normal normal 400 16px "Work Sans", sans-serif;
+  font: normal normal 500 16px "Work Sans", sans-serif;
   padding: 10px 10px;
-  border: none;
-  border-radius: 5px;
+  border: 5px solid rgba(160, 26, 201, 0.2);
+  border-radius: 10px;
   outline: none;
 `;
 export const FundButton = styled.button`
   width: 100%;
   min-height: 45px;
   color: white;
-  background-color: rebeccapurple;
+  background-color: #a31acb;
   border: none;
-  border-radius: 12px;
+  border-radius: 5px;
   outline: none;
   font: normal normal 600 18px "Work Sans", sans-serif;
   cursor: pointer;
 `;
 
-export const WithdrawButton = styled(FundButton)`
-  background-color: red;
+export const TipButton = styled(FundButton)`
+  background-color: skyblue;
 `;
+
+export const Note = styled.p`
+  padding: 10px;
+  font: normal normal 500 15px "Work Sans", sans-serif;
+`;
+
+export const WithdrawWrap = styled.div``;
+
+export const RequestStatus = styled.h2`
+  color: grey;
+  padding: 10px;
+  font: normal normal 500 15px "Work Sans", sans-serif;
+`;
+
+export const WithdrawButton = styled(FundButton)``;
