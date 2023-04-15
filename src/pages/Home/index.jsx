@@ -34,7 +34,7 @@ const Home = () => {
     <Container>
       <Wrapper>
         <Header />
-        <CampaignsSection campaignList={campaignList} />
+        <CampaignsSection heading="All Campaigns" campaignList={campaignList} />
         <TipCard />
       </Wrapper>
     </Container>

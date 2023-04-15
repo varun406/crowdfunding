@@ -1,6 +1,12 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { DataContext, contract, web3 } from "../../../App";
+import { DataContext, web3 } from "../../../App";
+import {
+  availableToWithdraw,
+  depositFund,
+} from "../../../api/services/Campaign";
+import { postWithdrawalRequest } from "../../../api/services/User";
+import { CampaignContext } from "../../../context/CampaignContext";
 import {
   EthInput,
   FundButton,
@@ -8,17 +14,8 @@ import {
   FundWrap,
   Heading,
   Label,
-  RequestStatus,
-  WithdrawButton,
-  WithdrawWrap,
 } from "../../../styles/Campaign/Fund";
-import { CampaignContext } from "../../../context/CampaignContext";
-import {
-  availableToWithdraw,
-  depositFund,
-} from "../../../api/services/Campaign";
 import Withdraw from "../Withdraw";
-import { postWithdrawalRequest } from "../../../api/services/User";
 
 const Fund = ({
   walletAddress,
@@ -27,6 +24,7 @@ const Fund = ({
   amountRaised,
   targetAmount,
   isCampaignEnded,
+  campaignId,
 }) => {
   const { setLoading, setSnackbarOpen, setSnackbarMsg } =
     useContext(DataContext);
@@ -40,7 +38,7 @@ const Fund = ({
       setLoading(true);
 
       const res = await axios.get(
-        `http://localhost:5000/withdrawal/get-request?address=${walletAddress}`
+        `http://localhost:5000/withdrawal/get-request?campaignId=${campaignId}`
       );
 
       setRequestStatus(res?.data.message[0]?.widthdrawalStatus || null);
@@ -59,7 +57,13 @@ const Fund = ({
 
     setLoading(true);
     console.log(walletAddress, currentAddress, charityTitle, typeof getFund);
-    await depositFund(walletAddress, currentAddress, charityTitle, getFund);
+    await depositFund(
+      walletAddress,
+      currentAddress,
+      charityTitle,
+      getFund,
+      campaignId
+    );
     setLoading(false);
   };
 
@@ -83,16 +87,15 @@ const Fund = ({
       );
       console.log(canWithdraw);
       setWithdrawStatus(canWithdraw);
-      const res = await postWithdrawalRequest(
+      await postWithdrawalRequest(
         walletAddress,
         charityName,
         amountRaised,
-        targetAmount
+        targetAmount,
+        campaignId
       );
-      setSnackbarOpen(true);
-      setSnackbarMsg(res.data.message);
       setLoading(false);
-      setSnackbarOpen(false);
+      window.location.reload();
     }
   };
 

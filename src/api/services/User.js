@@ -9,6 +9,7 @@ export const getPDF = async (address) => {
 //TRANSACTION
 
 export const postTransaction = async (
+  campaignId,
   txnName,
   txnHash,
   currentAddress,
@@ -18,6 +19,7 @@ export const postTransaction = async (
   const res = await axiosInstance.post(
     "http://localhost:5000/transaction/create-transaction",
     {
+      campaignId,
       txnName: txnName,
       txnHash: txnHash,
       donatorAddress: currentAddress,
@@ -39,7 +41,8 @@ export const postWithdrawalRequest = async (
   walletAddress,
   charityName,
   amountRaised,
-  targetAmount
+  targetAmount,
+  campaignId
 ) => {
   const res = await axiosInstance.post(
     `http://localhost:5000/withdrawal/post`,
@@ -48,6 +51,7 @@ export const postWithdrawalRequest = async (
       charityName,
       amountRaised: web3?.utils.fromWei(amountRaised, "ether"),
       targetAmount,
+      campaignId,
     }
   );
   return res.data.message;

@@ -69,6 +69,11 @@ export const RequestStatus = styled.h2`
   color: grey;
   padding: 10px;
   font: normal normal 500 15px "Work Sans", sans-serif;
+
+  span {
+    font: normal normal 600 18px "Work Sans", sans-serif;
+    text-decoration: underline;
+  }
 `;
 
 export const WithdrawButton = styled(FundButton)``;

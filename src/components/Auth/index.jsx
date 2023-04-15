@@ -39,6 +39,9 @@ const Auth = ({ method, register, handleSubmit, onSubmit, errors }) => {
               <Label>Username</Label>
               <Input {...register("userName")} />
               <Error>{errors.userName?.message}</Error>
+              <Label>Address</Label>
+              <Input {...register("address")} />
+              <Error>{errors.address?.message}</Error>
             </>
           )}
           <Label>Email</Label>

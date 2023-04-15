@@ -56,6 +56,7 @@ const Campaign = () => {
                 targetAmount={campaign?.target}
                 charityTitle={campaign?.title}
                 isCampaignEnded={campaign?.isEnded}
+                campaignId={campaign?.id}
               />
 
               {campaign?.walletAddress?.toLowerCase() === currentAddress &&

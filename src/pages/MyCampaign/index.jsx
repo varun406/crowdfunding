@@ -15,11 +15,12 @@ const MyCampaign = () => {
     const getCampaigns = async () => {
       setLoading(true);
       const allCampaigns = await getAllCampaigns();
-
+      console.log(allCampaigns);
       const filteredCampaigns = allCampaigns?.filter(
         (item) =>
           item.walletAddress.toLowerCase() === currentAddress?.toLowerCase()
       );
+      console.log(filteredCampaigns);
       filteredCampaigns && setCampaignList(filteredCampaigns);
       setLoading(false);
     };
@@ -29,8 +30,11 @@ const MyCampaign = () => {
     <Container>
       <Wrapper>
         <Header />
-        <CampaignsSection heading="My Campaign" campaignList={campaignList} />
-        <TipCard />
+        {campaignList?.length !== 0 ? (
+          <CampaignsSection heading="My Campaign" campaignList={campaignList} />
+        ) : (
+          <h1>You havent initiated any campaign</h1>
+        )}
       </Wrapper>
     </Container>
   );

@@ -10,12 +10,12 @@ const Withdraw = ({ requestStatus, SendRequest }) => {
     <WithdrawWrap>
       {requestStatus !== null && (
         <RequestStatus>
-          Request Status: <b>{requestStatus}</b>
+          Request Status: <span>{requestStatus}</span>
         </RequestStatus>
       )}
-      {requestStatus === "approved" ? null : (
+      {requestStatus === "rejected" ? (
         <WithdrawButton onClick={SendRequest}>Request Withdraw</WithdrawButton>
-      )}
+      ) : null}
     </WithdrawWrap>
   );
 };

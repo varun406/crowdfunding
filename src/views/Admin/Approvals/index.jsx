@@ -35,10 +35,10 @@ const Approvals = () => {
     setLoading(false);
   };
 
-  const approveRequest = async (address) => {
+  const approveRequest = async (campaignId) => {
     setLoading(true);
     const res = await axios.get(
-      `http://localhost:5000/withdrawal/get-request?address=${address}`
+      `http://localhost:5000/withdrawal/get-request?campaignId=${campaignId}`
     );
 
     setChangeData(res.data.message[0]);
@@ -47,8 +47,9 @@ const Approvals = () => {
   };
 
   const requestColumn = [
-    { field: "_id", headerName: "Id", width: 150 },
-    { field: "address", headerName: "Address", width: 220 },
+    { field: "_id", headerName: "Id", width: 100 },
+    { field: "campaignId", headerName: "Campaign Id", width: 150 },
+    { field: "address", headerName: "Address", width: 150 },
     { field: "charityName", headerName: "Charity Name", width: 180 },
     {
       field: "amountRaised",
@@ -74,7 +75,7 @@ const Approvals = () => {
           <ActionWrap>
             <StatusButton
               status="approve"
-              onClick={() => approveRequest(params.row.address)}
+              onClick={() => approveRequest(params.row.campaignId)}
             >
               Approve
             </StatusButton>
@@ -91,8 +92,9 @@ const Approvals = () => {
   ];
 
   const approvedColumn = [
-    { field: "_id", headerName: "Id", width: 150 },
-    { field: "address", headerName: "Address", width: 220 },
+    { field: "_id", headerName: "Id", width: 100 },
+    { field: "campaignId", headerName: "Campaign Id", width: 150 },
+    { field: "address", headerName: "Address", width: 150 },
     { field: "charityName", headerName: "Charity Name", width: 180 },
     {
       field: "amountRaised",
@@ -110,28 +112,12 @@ const Approvals = () => {
       headerName: "Withdrawal Status",
       width: 160,
     },
-    {
-      field: "action",
-      headerName: "Actions",
-      width: 160,
-      renderCell: (params) => {
-        return (
-          <ActionWrap>
-            <StatusButton
-              status="reject"
-              onClick={() => rejectRequest(params.row._id, "rejected")}
-            >
-              Reject
-            </StatusButton>
-          </ActionWrap>
-        );
-      },
-    },
   ];
 
   const rejectedColumn = [
-    { field: "_id", headerName: "Id", width: 150 },
-    { field: "address", headerName: "Address", width: 220 },
+    { field: "_id", headerName: "Id", width: 100 },
+    { field: "campaignId", headerName: "Campaign Id", width: 150 },
+    { field: "address", headerName: "Address", width: 150 },
     { field: "charityName", headerName: "Charity Name", width: 180 },
     {
       field: "amountRaised",
@@ -158,7 +144,7 @@ const Approvals = () => {
           <ActionWrap>
             <StatusButton
               status="approve"
-              onClick={() => approveRequest(params.row.address)}
+              onClick={() => approveRequest(params.row.campaignId)}
             >
               Approve
             </StatusButton>
@@ -183,7 +169,7 @@ const Approvals = () => {
       setProcessingData(processing);
     };
     getData();
-  }, [changeData]);
+  }, [changeData, rejectRequest]);
 
   return (
     <TabWrap>

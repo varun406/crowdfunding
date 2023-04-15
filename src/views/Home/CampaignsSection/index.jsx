@@ -10,11 +10,11 @@ import {
   SectionHeading,
 } from "../../../styles/Merchandise/StyleSlider";
 
-const CampaignsSection = ({ campaignList }) => {
+const CampaignsSection = ({ campaignList, heading }) => {
   return (
     <CampaignWrap>
       <HeadingSection>
-        <SectionHeading>All Campaign</SectionHeading>
+        <SectionHeading>{heading}</SectionHeading>
       </HeadingSection>
       <CampaignList>
         {campaignList?.map((data, index) => (

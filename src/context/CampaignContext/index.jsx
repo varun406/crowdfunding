@@ -1,9 +1,11 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { web3 } from "../../App";
+import { AuthContext } from "../AuthContext";
 
 export const CampaignContext = createContext();
 
 const CampaignProvider = ({ children }) => {
+  const { user } = useContext(AuthContext);
   const [currentAddress, setCurrentAddress] = useState();
   const [balance, setBalance] = useState();
 
@@ -23,10 +25,14 @@ const CampaignProvider = ({ children }) => {
     onInit();
   }, []);
 
-  window.ethereum.on("accountsChanged", function (accounts) {
+  window.ethereum.on("accountsChanged", async function (accounts) {
     // Time to reload your interface with accounts[0]!
     console.log(accounts[0]);
     setCurrentAddress(accounts[0]);
+    const result = await web3?.eth.getBalance(accounts[0]);
+    const resultFormated = await web3?.utils.fromWei(result);
+
+    setBalance(resultFormated);
   });
 
   return (

@@ -47,7 +47,8 @@ export const depositFund = async (
   walletAddress,
   currentAddress,
   charityTitle,
-  getFund
+  getFund,
+  campaignId
 ) => {
   web3.eth
     .sendTransaction({
@@ -67,6 +68,7 @@ export const depositFund = async (
           });
 
         await postTransaction(
+          campaignId,
           charityTitle,
           hash,
           currentAddress,

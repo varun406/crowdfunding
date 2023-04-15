@@ -15,12 +15,10 @@ const Login = () => {
   } = useForm({ mode: "onBlur", resolver: yupResolver(loginSchema) });
 
   const onSubmit = async (data) => {
-    const getData = async () => {
-      const res = await axiosInstance.post("/user/login", data);
-      console.log(res.data.message._id);
-      window.localStorage.setItem("authToken", res?.data.message._id);
-    };
-    getData();
+    const res = await axiosInstance.post("/user/login", data);
+    console.log(res.data.message._id);
+    window.localStorage.setItem("authToken", res?.data.message._id);
+    window.location.reload();
     handleClose();
   };
 

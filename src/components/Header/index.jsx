@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Menu } from "@mui/icons-material";
 import Button from "@mui/material/Button";
@@ -87,7 +87,7 @@ const Header = () => {
       currentAddress
     );
 
-    await uploadFile(user, data.attachment[0], currentAddress);
+    await uploadFile(id, user, data.attachment[0]);
 
     handleClose();
     reset();
