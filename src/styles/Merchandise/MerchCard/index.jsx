@@ -10,6 +10,7 @@ export const MerchCardWrap = styled.div`
   min-height: 300px;
   background-image: url(${(props) => props.url});
   background-position: center;
+  background-size: 120% 100%;
   background-repeat: no-repeat;
   border-radius: 8px;
   display: flex;
@@ -25,7 +26,6 @@ export const MerchImage = styled.img`
   max-width: 450px;
   height: 300px;
   object-fit: cover;
-  object-position: center;
 `;
 
 export const BuyNow = styled.button`
@@ -42,7 +42,7 @@ export const BuyNow = styled.button`
 export const SizeButton = styled.button`
   flex: 1;
   background: transparent;
-  color: white;
+  color: black;
   outline: none;
   border: none;
   cursor: pointer;
@@ -65,5 +65,5 @@ export const EthAmount = styled.h2`
   padding: 10px;
   border-top-left-radius: 25px;
   background: #03001c;
-  font: normal normal 700 18px "Mukta", sans-serif;
+  font: normal normal 500 16px "Mukta", sans-serif;
 `;

@@ -1,28 +1,27 @@
-import React, { useState } from "react";
-import {
-  MerchCardWrap,
-  SizeButton,
-  Section,
-  PriceSection,
-  EthAmount,
-  MerchImage,
-  BuyNow,
-} from "../../styles/Merchandise/MerchCard";
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { useContext } from "react";
-import { DataContext } from "../../App";
-import { CampaignContext } from "../../context/CampaignContext";
+import React, { useContext, useState } from "react";
+import { DataContext, web3 } from "../../App";
 import { postTransaction } from "../../api/services/User";
+import { CampaignContext } from "../../context/CampaignContext";
+import {
+  BuyNow,
+  EthAmount,
+  MerchCardWrap,
+  MerchImage,
+  PriceSection,
+} from "../../styles/Merchandise/MerchCard";
+import { AuthContext } from "../../context/AuthContext";
 
-const MerchCard = ({ url }) => {
-  const { web3, setLoading, setSnackbarOpen, setSnackbarMsg } =
+const MerchCard = ({ url, amount, styles }) => {
+  const { setLoading, setSnackbarOpen, setSnackbarMsg } =
     useContext(DataContext);
   const { currentAddress } = useContext(CampaignContext);
+  const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -44,12 +43,14 @@ const MerchCard = ({ url }) => {
         console.log("transactionHash", hash);
         if (hash) {
           await postTransaction(
-            "Withdrawal Approved",
+            user,
+            "Purchased Merchandise",
             hash,
             currentAddress,
             "0xABaF9726c4b72778f89f949779c7932cc9d4F9cB",
-            0.25 //TODO: enter amount
+            0.0025 //TODO: enter amount
           );
+          handleClose();
         }
       })
       .on("error", async function (err) {
@@ -60,8 +61,10 @@ const MerchCard = ({ url }) => {
     setLoading(false);
   };
 
+  console.log(amount);
+
   return (
-    <MerchCardWrap url={url}>
+    <>
       <Dialog maxWidth="lg" open={open} keepMounted onClose={handleClose}>
         <DialogTitle>Grab it</DialogTitle>
         <DialogContent>
@@ -71,14 +74,14 @@ const MerchCard = ({ url }) => {
           <BuyNow onClick={sendEth}>Buy Now</BuyNow>
         </DialogActions>
       </Dialog>
-      <Section>
-        <SizeButton onClick={openModal}>XL</SizeButton>
-        <SizeButton onClick={openModal}>XXL</SizeButton>
-      </Section>
-      <PriceSection>
-        <EthAmount>0.25Eth</EthAmount>
-      </PriceSection>
-    </MerchCardWrap>
+      <MerchCardWrap url={url} onClick={!styles ? openModal : null}>
+        {!styles && (
+          <PriceSection>
+            <EthAmount>0.0025 Eth</EthAmount>
+          </PriceSection>
+        )}
+      </MerchCardWrap>
+    </>
   );
 };
 

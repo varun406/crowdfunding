@@ -5,7 +5,10 @@ import {
   availableToWithdraw,
   depositFund,
 } from "../../../api/services/Campaign";
-import { postWithdrawalRequest } from "../../../api/services/User";
+import {
+  checkEligibility,
+  postWithdrawalRequest,
+} from "../../../api/services/User";
 import { CampaignContext } from "../../../context/CampaignContext";
 import {
   EthInput,
@@ -14,6 +17,7 @@ import {
   FundWrap,
   Heading,
   Label,
+  TipButton,
 } from "../../../styles/Campaign/Fund";
 import Withdraw from "../Withdraw";
 
@@ -26,7 +30,7 @@ const Fund = ({
   isCampaignEnded,
   campaignId,
 }) => {
-  const { setLoading, setSnackbarOpen, setSnackbarMsg } =
+  const { setLoading, setSnackbarOpen, setSnackbarMsg, setTipOpen } =
     useContext(DataContext);
   const { currentAddress } = useContext(CampaignContext);
   const [getFund, setFund] = useState(0.02);
@@ -42,10 +46,11 @@ const Fund = ({
       );
 
       setRequestStatus(res?.data.message[0]?.widthdrawalStatus || null);
+      console.log(requestStatus);
       setLoading(false);
     };
     checkWithdrawAvailability();
-  }, [walletAddress]);
+  }, [walletAddress, campaignId]);
 
   const DepositFund = async (e) => {
     e.preventDefault();
@@ -79,21 +84,16 @@ const Fund = ({
       setLoading(false);
       setSnackbarOpen(false);
     } else {
-      console.log("run");
-      console.log(web3?.utils.fromWei(amountRaised, "ether"));
-      const canWithdraw = await availableToWithdraw(
-        walletAddress,
-        currentAddress
-      );
-      console.log(canWithdraw);
+      const canWithdraw = await availableToWithdraw(campaignId, currentAddress);
       setWithdrawStatus(canWithdraw);
       await postWithdrawalRequest(
         walletAddress,
         charityName,
-        amountRaised,
+        web3?.utils.fromWei(amountRaised, "ether"),
         targetAmount,
         campaignId
       );
+
       setLoading(false);
       window.location.reload();
     }
@@ -105,7 +105,11 @@ const Fund = ({
         {walletAddress?.toLowerCase() === currentAddress ? "Withdraw" : "Fund"}
       </Heading>
       {walletAddress?.toLowerCase() === currentAddress ? (
-        <Withdraw requestStatus={requestStatus} SendRequest={SendRequest} />
+        <Withdraw
+          requestStatus={requestStatus}
+          isCampaignEnded={isCampaignEnded}
+          SendRequest={SendRequest}
+        />
       ) : (
         <FundForm>
           <Label>Enter ETH to donate</Label>
@@ -121,6 +125,13 @@ const Fund = ({
           </FundButton>
         </FundForm>
       )}
+      {walletAddress?.toLowerCase() === currentAddress
+        ? requestStatus === "approved" && (
+            <TipButton onClick={() => setTipOpen(true)}>
+              Tip CrowdFundr
+            </TipButton>
+          )
+        : null}
     </FundWrap>
   );
 };

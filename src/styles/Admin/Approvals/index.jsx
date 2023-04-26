@@ -21,6 +21,12 @@ export const TabWrap = styled.div`
   }
 `;
 
+export const InsideWrap = styled(TabWrap)`
+  .MuiTabPanel-root {
+    padding: 20px 0;
+  }
+`;
+
 export const PanelContainer = styled.div`
   width: 100%;
   padding: 10px;

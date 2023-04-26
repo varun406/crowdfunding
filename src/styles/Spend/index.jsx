@@ -63,6 +63,7 @@ export const AmountSection = styled.div`
 `;
 
 export const Amount = styled.p`
+  color: ${(props) => (props.isDeposit ? "green" : "red")};
   font: normal normal 600 15px "Work Sans", sans-serif;
 `;
 

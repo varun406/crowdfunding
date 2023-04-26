@@ -32,15 +32,33 @@ export const addCampaign = async (
       currentAddress
     )
     .send({ from: currentAddress })
+    .on("transactionHash", async function (hash) {
+      console.log(hash);
+      if (hash) {
+        await postTransaction(
+          id,
+          "Added Campaign",
+          hash,
+          currentAddress,
+          "0x701fb47cbc4d0ea382a21f1a5a4cf3eda5730834",
+          0.0004527
+        );
+      }
+    })
+
     .on("error", function (err) {
       console.log(err);
     });
 };
 
-export const availableToWithdraw = async (walletAddress, currentAddress) => {
+export const availableToWithdraw = async (campaignId, currentAddress) => {
   return await contract?.methods
-    .availableToWithdraw(walletAddress)
-    .send({ from: currentAddress });
+    .availableToWithdraw(campaignId)
+    .send({ from: currentAddress })
+    .on("error", function (err) {
+      console.log(err);
+      window.location.reload();
+    });
 };
 
 export const depositFund = async (
@@ -62,7 +80,7 @@ export const depositFund = async (
       console.log(Number(getFund) * 1000000000000000000);
       if (hash) {
         await contract?.methods
-          .addToKidsBalance(walletAddress, web3.utils.toWei(getFund, "ether"))
+          .addToKidsBalance(campaignId, web3.utils.toWei(getFund, "ether"))
           .send({
             from: currentAddress,
           });

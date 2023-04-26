@@ -24,6 +24,10 @@ export const Label = styled.label`
 
 export const Heading = styled.h1`
   font: normal normal 600 35px "Work Sans", sans-serif;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 `;
 
 export const FundForm = styled.form`
@@ -52,6 +56,10 @@ export const FundButton = styled.button`
   outline: none;
   font: normal normal 600 18px "Work Sans", sans-serif;
   cursor: pointer;
+
+  &:hover {
+    background-color: #9019b5;
+  }
 `;
 
 export const TipButton = styled(FundButton)`
@@ -64,6 +72,11 @@ export const Note = styled.p`
 `;
 
 export const WithdrawWrap = styled.div``;
+export const SectionWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 
 export const RequestStatus = styled.h2`
   color: grey;
@@ -76,4 +89,10 @@ export const RequestStatus = styled.h2`
   }
 `;
 
-export const WithdrawButton = styled(FundButton)``;
+export const WithdrawButton = styled(FundButton)`
+  &:disabled,
+  &[disabled] {
+    background-color: #550c6b;
+    cursor: not-allowed;
+  }
+`;

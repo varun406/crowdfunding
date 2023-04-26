@@ -14,7 +14,7 @@ const ProductSlider = () => {
   return (
     <ProductSliderWrap>
       <HeadingSection>
-        <SectionHeading>Shirt Collection</SectionHeading>
+        <SectionHeading>Our Products</SectionHeading>
       </HeadingSection>
       <StyledSlider {...settings}>
         {imageData.map((item, index) => (

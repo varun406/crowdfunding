@@ -1,15 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Menu } from "@mui/icons-material";
+import { EmojiEvents, Menu, Wallet } from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import moment from "moment";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { DataContext, SideBarContext, contract } from "../../App";
+import { DataContext, SideBarContext } from "../../App";
+import { addCampaign } from "../../api/services/Campaign";
+import { checkEligibility } from "../../api/services/User";
+import { AuthContext } from "../../context/AuthContext";
+import { CampaignContext } from "../../context/CampaignContext";
 import {
   AccountSection,
   BalanceSection,
@@ -23,26 +28,22 @@ import {
   FormWrap,
   HeaderContainer,
   HeaderWrap,
-  iconStyles,
   Input,
   Label,
-  Line,
   List,
   ListGroup,
   Logo,
   LogoSection,
+  Logout,
   MenuSection,
   Section,
   TargetSection,
+  WalletAddress,
+  iconStyles,
 } from "../../styles/Home/Header";
-import { StartCampaign } from "../../styles/Home/Sidebar";
-import { campaignSchema } from "./campaignSchema";
-import { AuthContext } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
-import axiosInstance from "../../api/axios";
-import { CampaignContext } from "../../context/CampaignContext";
 import { uploadFile } from "../../utils/uploadFiles";
-import { addCampaign } from "../../api/services/Campaign";
+import { campaignSchema } from "./campaignSchema";
+import { ClaimButton } from "../../styles/RewardModal";
 
 const Header = () => {
   const {
@@ -51,12 +52,19 @@ const Header = () => {
     formState: { errors },
     reset,
   } = useForm({ mode: "onTouched", resolver: yupResolver(campaignSchema) });
-  const { user } = useContext(AuthContext);
+  const { user, userAddress } = useContext(AuthContext);
   const { setSideBarOpen } = useContext(SideBarContext);
-  const { setLoading, setLoginOpen } = useContext(DataContext);
+  const { setLoading, setLoginOpen, setRewardModal } = useContext(DataContext);
   const { balance, currentAddress } = useContext(CampaignContext);
 
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const eligible = async () => {
+      await checkEligibility(currentAddress);
+    };
+    user && currentAddress && eligible();
+  }, [user, currentAddress]);
 
   const handleSideBarOpen = () => {
     setSideBarOpen((prev) => !prev);
@@ -76,6 +84,7 @@ const Header = () => {
     //SEND TO CAMPAIGN
     setLoading(true);
     const id = await uuidv4();
+
     await addCampaign(
       id,
       data.address,
@@ -92,6 +101,10 @@ const Header = () => {
     handleClose();
     reset();
     setLoading(false);
+  };
+
+  const logout = () => {
+    window.localStorage.clear();
   };
 
   return (
@@ -145,9 +158,17 @@ const Header = () => {
           <AccountSection>
             {balance && (
               <Section>
+                <ClaimButton onClick={() => setRewardModal(true)}>
+                  <EmojiEvents sx={{ paddingInline: "2px" }} /> Rewards
+                </ClaimButton>
+                <WalletAddress>
+                  <Wallet sx={{ paddingInline: "2px" }} />{" "}
+                  {currentAddress?.substr(0, 5)}...
+                  {currentAddress?.substr(35, 42)}
+                </WalletAddress>
                 <BalanceSection>
                   <EthLogo src="https://media.tenor.com/8CnlmiFa-rAAAAAi/eth-ethereum.gif" />
-                  <EthAmount>{balance.substr(0, 5)}ETH</EthAmount>
+                  <EthAmount>{balance?.substr(0, 5)}ETH</EthAmount>
                 </BalanceSection>
                 <MenuSection>
                   <EthAvatar
@@ -166,6 +187,9 @@ const Header = () => {
                     </List>
                     <List>
                       <Link to="/merchandise">Merchandise</Link>
+                    </List>
+                    <List>
+                      <Logout onClick={logout}>Logout</Logout>
                     </List>
                   </ListGroup>
                 </MenuSection>

@@ -21,7 +21,7 @@ import {
   TxnName,
   linkStyles,
 } from "../../../styles/Spend";
-const Transactions = ({ txn }) => {
+const Transactions = ({ txn, currentAddress }) => {
   return (
     <SpendWrapper>
       <HeadingSection>
@@ -35,14 +35,16 @@ const Transactions = ({ txn }) => {
                 <TxnName>{item.txnName.substring(0, 55)}...</TxnName>
                 <ToAddress>
                   <MoreHoriz sx={MoreStyles} />
-                  {item.doneeAddress.substring(33)}
+                  {item.doneeAddress.substring(37)}
                 </ToAddress>
               </ToSection>
 
               <LinkSection>
                 <AmountSection>
                   <EthLogo src="./assets/eth-logo.svg" />
-                  <Amount>{item.amount}</Amount>
+                  <Amount isdeposit={item.doneeAddress === currentAddress}>
+                    {item.amount}
+                  </Amount>
                 </AmountSection>
                 <Link to={`https://goerli.etherscan.io/tx/${item.txnHash}`}>
                   <LinkIcon sx={linkStyles} />

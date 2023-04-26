@@ -3,17 +3,10 @@ import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../../App";
 import { getDonationTransaction, getPDF } from "../../../api/services/User";
-import {
-  Box,
-  BoxWrap,
-  Counts,
-  DetailText,
-  Details,
-} from "../../../styles/Campaign/BannerSection";
+import { DetailText, Details } from "../../../styles/Campaign/BannerSection";
 import {
   CampaignDetailWrap,
   CampaignDetails,
-  CreatorAddress,
   CreatorImg,
   CreatorSection,
   StoryDesc,
@@ -32,13 +25,12 @@ const CampaignDetail = ({ data }) => {
       setLoading(true);
       const pdf = await getPDF(data?.walletAddress);
       setPDF(pdf);
-      setDonators(await getDonationTransaction(data?.walletAddress));
+      const donation = await getDonationTransaction(data?.walletAddress);
+      setDonators([...new Set(donation.map((item) => item.donatorAddress))]);
       setLoading(false);
     };
     getAllDonators();
   }, [data]);
-
-  console.log(donators);
 
   return (
     <CampaignDetails>
@@ -48,9 +40,9 @@ const CampaignDetail = ({ data }) => {
           {donators &&
             donators.map((item) => (
               <CreatorImg
-                src={`https://api.multiavatar.com/${item.donatorAddress}.svg`}
+                src={`https://api.multiavatar.com/${item}.svg`}
                 alt="donator"
-                key={item._id}
+                key={item}
               />
             ))}
         </CreatorSection>

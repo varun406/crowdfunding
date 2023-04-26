@@ -72,6 +72,7 @@ export const AccountSection = styled.div`
 
 export const Section = styled.div`
   display: flex;
+  align-items: center;
   gap: 20px;
 `;
 
@@ -84,6 +85,10 @@ export const BalanceSection = styled.div`
   gap: 15px;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 25px;
+`;
+
+export const WalletAddress = styled(BalanceSection)`
+  padding: 12px;
 `;
 
 export const EthLogo = styled.img`
@@ -150,6 +155,15 @@ export const List = styled.li`
     background-color: rgba(255, 255, 255, 0.02);
     color: purple;
   }
+`;
+
+export const Logout = styled.button`
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: white;
+  font: normal normal 600 14px "Work Sans", sans-serif;
 `;
 
 export const Connect = styled.button`

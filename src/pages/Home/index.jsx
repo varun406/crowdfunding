@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import Header from "../../components/Header";
-import TipCard from "../../components/TipCard";
-import { Container, Wrapper } from "../../styles/Home/Main";
-import CampaignsSection from "../../views/Home/CampaignsSection";
-import { CampaignContext } from "../../context/CampaignContext";
 import { DataContext } from "../../App";
 import { getAllCampaigns } from "../../api/services/Campaign";
+import Header from "../../components/Header";
+import TipCard from "../../components/TipCard";
+import { CampaignContext } from "../../context/CampaignContext";
+import { Container, Wrapper } from "../../styles/Home/Main";
+import CampaignsSection from "../../views/Home/CampaignsSection";
+import Hero from "../../views/Home/Hero";
+import Top from "../../views/Home/Top";
 const Home = () => {
   const { setLoading } = useContext(DataContext);
   const { currentAddress } = useContext(CampaignContext);
@@ -32,8 +34,10 @@ const Home = () => {
 
   return (
     <Container>
+      <Header />
+      <Hero />
       <Wrapper>
-        <Header />
+        <Top />
         <CampaignsSection heading="All Campaigns" campaignList={campaignList} />
         <TipCard />
       </Wrapper>

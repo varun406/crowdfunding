@@ -44,6 +44,10 @@ export const DetailSection = styled.div`
 `;
 export const CardTitle = styled.h1`
   font: normal normal 600 16px "Work Sans", sans-serif;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 `;
 export const CardDesc = styled(CardCategory)`
   font-weight: 400;

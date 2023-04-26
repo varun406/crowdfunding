@@ -18,12 +18,13 @@ import CampaignProvider from "./context/CampaignContext";
 import MyCampaign from "./pages/MyCampaign";
 import Merchandise from "./pages/Merchandise";
 import PrivateRoutes from "./routes/PrivateRoutes";
+import RewardModal from "./components/RewardModal";
 
 export const SideBarContext = createContext(null);
 export const DataContext = createContext(null);
 
 const abi = CryptoKids.abi;
-const contract_address = "0xa567587a663746Dbf5E6B5A8e7b938e56cf2A84f";
+const contract_address = "0x701Fb47CBc4d0eA382A21F1A5A4cF3Eda5730834";
 export const web3 = new Web3(Web3.givenProvider);
 export const contract = new web3.eth.Contract(abi, contract_address);
 
@@ -38,6 +39,7 @@ const App = () => {
   const [openTip, setTipOpen] = useState(false);
   const [openLogin, setLoginOpen] = useState(false);
   const [openSignup, setSignupOpen] = useState(false);
+  const [openRewardModal, setRewardModal] = useState(false);
 
   const override = {
     display: "block",
@@ -74,6 +76,8 @@ const App = () => {
           setLoginOpen,
           openSignup,
           setSignupOpen,
+          openRewardModal,
+          setRewardModal,
         }}
       >
         <AuthProvider>
@@ -102,6 +106,8 @@ const App = () => {
               {isSideBarOpen && <SideBar />}
               {openLogin && <Login />}
               {openSignup && <Signup />}
+
+              {openRewardModal && <RewardModal />}
               <BrowserRouter>
                 <Routes>
                   <Route path="/" element={<Home />} />

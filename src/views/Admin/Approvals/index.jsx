@@ -1,16 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { DataGrid } from "@mui/x-data-grid/DataGrid";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { DataContext } from "../../../App";
 import {
   ActionWrap,
+  InsideWrap,
   StatusButton,
-  TabWrap,
 } from "../../../styles/Admin/Approvals";
-import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import PaymentDrawer from "../PaymentDrawer";
-import { DataContext } from "../../../App";
 
 const Approvals = () => {
   const { setLoading, setDrawerOpen, setSnackbarOpen, setSnackbarMsg } =
@@ -27,7 +27,7 @@ const Approvals = () => {
 
   const rejectRequest = async (id, status) => {
     setLoading(true);
-    const res = await axios.put(
+    await axios.put(
       `http://localhost:5000/withdrawal/change-status?id=${id}&status=${status}`
     );
     setSnackbarOpen(true);
@@ -169,10 +169,10 @@ const Approvals = () => {
       setProcessingData(processing);
     };
     getData();
-  }, [changeData, rejectRequest]);
+  }, [changeData]);
 
   return (
-    <TabWrap>
+    <InsideWrap>
       {changeData && <PaymentDrawer data={changeData} />}
 
       <TabContext value={value}>
@@ -214,7 +214,7 @@ const Approvals = () => {
           />
         </TabPanel>
       </TabContext>
-    </TabWrap>
+    </InsideWrap>
   );
 };
 

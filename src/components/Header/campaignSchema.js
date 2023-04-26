@@ -1,5 +1,4 @@
 import * as yup from "yup";
-import moment from "moment";
 
 export const campaignSchema = yup.object().shape({
   address: yup
@@ -22,6 +21,7 @@ export const campaignSchema = yup.object().shape({
     .number()
     .typeError("Amount must be a number")
     .moreThan(0)
+    .min(0.0001)
     .required("Please provide a message"),
   attachment: yup.mixed().required("Please provide a attachment"),
 });

@@ -36,7 +36,7 @@ const StyleSlider = () => {
       <StyledSlider {...settings}>
         {imageData.map((item, index) => (
           <CardWrapper key={index} random={rotationData[index]}>
-            <MerchCard url={item.url} />
+            <MerchCard url={item.url} amount={item.amount} styles={"demo"} />
           </CardWrapper>
         ))}
       </StyledSlider>

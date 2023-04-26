@@ -1,7 +1,7 @@
 import { Drawer } from "@mui/material";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { DataContext } from "../../../App";
+import { DataContext, web3 } from "../../../App";
 import {
   CharityAddress,
   CharityName,
@@ -12,10 +12,10 @@ import {
   SendEth,
 } from "../../../styles/Admin/Drawer";
 import { postTransaction } from "../../../api/services/User";
+import { AuthContext } from "../../../context/AuthContext";
 
 const PaymentDrawer = ({ data }) => {
   const {
-    web3,
     setLoading,
     setDrawerOpen,
     isDrawerOpen,
@@ -23,7 +23,7 @@ const PaymentDrawer = ({ data }) => {
     setSnackbarMsg,
   } = useContext(DataContext);
   const [txnHash, setTxnHash] = useState("");
-
+  const { user } = useContext(AuthContext);
   const toggleDrawer = (event) => {
     if (
       event.type === "keydown" &&
@@ -34,8 +34,6 @@ const PaymentDrawer = ({ data }) => {
 
     setDrawerOpen(false);
   };
-
-  console.log(data);
 
   useEffect(() => {
     const approveRequest = async () => {
@@ -54,6 +52,7 @@ const PaymentDrawer = ({ data }) => {
   const sendEth = (address, amount) => {
     console.log(address, amount);
     console.log(typeof web3.utils.toWei(amount, "ether"));
+    setLoading(true);
     web3.eth
       .sendTransaction({
         from: "0xABaF9726c4b72778f89f949779c7932cc9d4F9cB",
@@ -65,13 +64,16 @@ const PaymentDrawer = ({ data }) => {
         if (hash) {
           setTxnHash(hash);
           await postTransaction(
+            user,
             "Withdrawal Approved",
             hash,
             "0xABaF9726c4b72778f89f949779c7932cc9d4F9cB",
             address,
             amount
           );
+          setDrawerOpen(false);
         }
+        setLoading(false);
       })
       .on("error", async function (err) {
         setSnackbarOpen(true);

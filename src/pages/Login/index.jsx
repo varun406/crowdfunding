@@ -18,6 +18,7 @@ const Login = () => {
     const res = await axiosInstance.post("/user/login", data);
     console.log(res.data.message._id);
     window.localStorage.setItem("authToken", res?.data.message._id);
+    window.localStorage.setItem("userAddress", res?.data.message.address);
     window.location.reload();
     handleClose();
   };

@@ -10,14 +10,24 @@ const AuthProvider = ({ children }) => {
     localStorage.getItem("authToken") ? localStorage.getItem("authToken") : null
   );
 
+  const [userAddress, setUserAddress] = useState(() =>
+    localStorage.getItem("userAddress")
+      ? localStorage.getItem("userAddress")
+      : null
+  );
+
   useEffect(() => {
     console.log(user);
     if (!user || user === undefined) {
       setLoginOpen(true);
     }
-  }, [user]);
+
+    if (!userAddress || userAddress === undefined) {
+      setLoginOpen(true);
+    }
+  }, [user, userAddress]);
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, userAddress }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,7 +5,7 @@ import { AuthContext } from "../AuthContext";
 export const CampaignContext = createContext();
 
 const CampaignProvider = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { userAddress } = useContext(AuthContext);
   const [currentAddress, setCurrentAddress] = useState();
   const [balance, setBalance] = useState();
 
@@ -27,7 +27,9 @@ const CampaignProvider = ({ children }) => {
 
   window.ethereum.on("accountsChanged", async function (accounts) {
     // Time to reload your interface with accounts[0]!
+    console.log(userAddress, accounts[0]);
     console.log(accounts[0]);
+    // localStorage.clear();
     setCurrentAddress(accounts[0]);
     const result = await web3?.eth.getBalance(accounts[0]);
     const resultFormated = await web3?.utils.fromWei(result);
